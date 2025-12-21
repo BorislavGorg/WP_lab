@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${chef != null} ? 'Edit Chef' : 'Add Chef'">Chef Form</title>
+
+    <style>
+        body {
+            width: 450px;
+            margin: 40px auto;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input, textarea {
+            margin: 8px 0;
+            padding: 10px;
+            font-size: 15px;
+            border-radius: 6px;
+            border: 1px solid #bbb;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        button {
+            margin-top: 12px;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background-color: #004c99;
+        }
+
+        .back {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .back a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .back a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1 th:text="${chef != null} ? 'Edit Chef' : 'Add New Chef'"></h1>
+
+    <!-- EDIT -->
+    <form th:if="${chef != null}" th:action="@{'/chefs/edit/' + ${chef.id}}" method="post">
+
+        <input type="text" name="firstName" th:value="${chef.firstName}" placeholder="First Name" required />
+
+        <input type="text" name="lastName" th:value="${chef.lastName}" placeholder="Last Name" required />
+
+        <textarea name="bio" placeholder="Short biography..." required
+                  th:text="${chef.bio}"></textarea>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <!-- ADD -->
+    <form th:unless="${chef != null}" th:action="@{/chefs/add}" method="post">
+
+        <input type="text" name="firstName" placeholder="First Name" required />
+
+        <input type="text" name="lastName" placeholder="Last Name" required />
+
+        <textarea name="bio" placeholder="Short biography..." required></textarea>
+
+        <button type="submit">Add Chef</button>
+    </form>
+
+    <div class="back">
+        <a th:href="@{/chefs}">← Back to list</a>
+    </div>
+
+</div>
+
+</body>
+</html>

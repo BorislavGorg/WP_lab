@@ -1,70 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="utf-8">
-    <title>Add Dish to Chef</title>
-    <style type="text/css">
+    <meta charset="UTF-8">
+    <title>All Dishes</title>
+
+    <style>
         body {
-            width: 800px;
-            margin: auto;
+            width: 900px;
+            margin: 20px auto;
             font-family: Arial, sans-serif;
         }
+        h1 { text-align: center; }
+
         table {
             width: 100%;
             margin-top: 20px;
             border-collapse: collapse;
         }
-        table, td, th {
+
+        table, th, td {
             border: 1px solid black;
             padding: 10px;
         }
+
         th {
             background-color: #4CAF50;
             color: white;
+            font-size: 18px;
         }
-        section {
-            float: left;
-            margin: 0 1.5%;
-            width: 63%;
+
+        .actions a, .actions button {
+            margin-right: 10px;
+            text-decoration: none;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
         }
-        aside {
-            float: right;
-            margin: 0 1.5%;
-            width: 30%;
+
+        .edit-btn { background: #0066cc; }
+        .delete-btn { background: #cc0000; }
+
+        .add-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            border-radius: 4px;
         }
     </style>
 </head>
+
 <body>
-<header>
-    <h1>Select the Dish to add to the Chef</h1>
-    <a th:href="@{/dishes}">
-        <button type="button" style="margin-top: 10px;">Manage Dishes</button>
-    </a>
-</header>
-<section>
-    <h2>Select dish:</h2>
-    <form th:action="@{/dishes/add-to-chef}" method="post">
-        <input type="hidden" name="chefId" th:value="${chef.id}" />
-        <!-- Dynamically display radio buttons for each dish -->
-        <div th:each="dish : ${dishes}">
-            <input type="radio" name="dishId" th:value="${dish.dishId}" required>
-            <span th:text="${dish.name}"></span>
-        </div>
-        <br/>
-        <input type="submit" value="Add dish">
-    </form>
-</section>
-<aside>
-    <table>
-        <tr>
-            <td><b>Chef ID</b></td>
-            <td th:text="${chef.id}"></td>
-        </tr>
-        <tr>
-            <td><b>Chef Name</b></td>
-            <td th:text="${chef.firstName} + ' ' + ${chef.lastName}"></td>
-        </tr>
-    </table>
-</aside>
+
+<h1>All Dishes</h1>
+
+<div style="margin-bottom: 20px;" sec:authorize="hasRole('ADMIN')">
+    <a class="add-btn" th:href="@{/dishes/add}">Add New Dish</a>
+</div>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Cuisine</th>
+        <th>Preparation Time</th>
+        <th>Rank</th>
+        <th>Chef</th>
+        <th>Actions</th>
+    </tr>
+
+    <tr th:each="dish : ${dishes}">
+        <td th:text="${dish.id}"></td>
+        <td th:text="${dish.name}"></td>
+        <td th:text="${dish.cuisine}"></td>
+        <td th:text="${dish.preparationTime} + ' min'"></td>
+        <td th:text="${dish.rank}"></td>
+        <td th:text="${dish.chef != null ? dish.chef.firstName + ' ' + dish.chef.lastName : '---'}"></td>
+
+        <td class="actions" sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{'/dishes/edit/' + ${dish.id}}" class="edit-btn">Edit</a>
+
+            <form th:action="@{'/dishes/delete/' + ${dish.id}}"
+                  method="post"
+                  style="display:inline;">
+                <button type="submit"
+                        class="delete-btn"
+                        onclick="return confirm('Are you sure?')">
+                    Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+</table>
+
 </body>
 </html>

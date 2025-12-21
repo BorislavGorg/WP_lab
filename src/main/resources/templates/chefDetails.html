@@ -1,68 +1,97 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Chef Profile</title>
+    <meta charset="utf-8">
+    <title>Chef Details</title>
 
     <style>
         body {
-            width: 850px;
-            margin: 30px auto;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #fafafa;
+            width: 700px;
+            margin: 40px auto;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
         }
 
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.07);
+        .container {
+            background: #fff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.15);
         }
 
         h1 {
-            color: #2b2b2b;
+            text-align: center;
+            font-size: 28px;
             margin-bottom: 5px;
         }
 
-        .subtitle {
-            color: #555;
-            font-style: italic;
-            margin-bottom: 20px;
+        .bio {
+            margin-top: 10px;
+            padding: 12px;
+            background: #eef3ff;
+            border-left: 4px solid #0066cc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        h2 {
+            margin-top: 25px;
+            color: #333;
         }
 
         ul {
-            padding-left: 0;
-            margin-top: 15px;
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
         }
 
         li {
-            list-style: none;
-            background: #e9f1ff;
-            padding: 10px;
-            margin-bottom: 7px;
-            border-radius: 5px;
-            color: #24456b;
-            font-weight: 500;
+            background: #f7f7f7;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        .back {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back a {
+            text-decoration: none;
+            color: #0066cc;
+            font-size: 15px;
+        }
+
+        .back a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-<div class="card">
+
+<div class="container">
 
     <h1 th:text="${chef.firstName} + ' ' + ${chef.lastName}"></h1>
-    <div class="subtitle" th:text="'Specialty: ' + ${chef.bio}"></div>
 
-    <h2>Signature Dishes</h2>
+    <div class="bio" th:text="${chef.bio}"></div>
+
+    <h2>Dishes prepared by this chef:</h2>
 
     <ul>
-        <li th:each="dish : ${chefDishes}">
-            <span th:text="${dish.name}"></span> —
-            <span th:text="${dish.cuisine}"></span>
-            <span th:text="'• ' + ${dish.preparationTime} + ' min'"></span>
+        <li th:each="dish : ${chefDishes}"
+            th:text="${dish.name} + ' • ' + ${dish.cuisine} + ' • ' + ${dish.preparationTime} + ' min'">
         </li>
     </ul>
 
+    <div class="back">
+        <a th:href="@{/chefs}">← Back to all chefs</a>
+    </div>
+
 </div>
+
 </body>
 </html>

@@ -1,16 +1,22 @@
 package mk.ukim.finki.wp.lab.repository;
 
 import mk.ukim.finki.wp.lab.model.Dish;
-
+import mk.ukim.finki.wp.lab.model.Rank;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
+@Repository
+public interface DishRepository extends JpaRepository<Dish, Long> {
 
-public interface DishRepository {
-    List<Dish> findAll();
-    Dish findByDishId(String dishId);
-    Optional<Dish> findById(Long id);
-    Dish save(Dish dish);
-    void deleteById(Long id);
+    List<Dish> findAllByChef_Id(Long chefId);
+
+    List<Dish> findAllByNameContainingIgnoreCaseAndCuisineContainingIgnoreCase(
+            String name, String cuisine
+    );
+
+    List<Dish> findAllByPreparationTimeLessThan(int prepTime);
+
+    List<Dish> findAllByRank(Rank rank);
 }

@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.lab.bootstrap;
 import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.wp.lab.model.Chef;
 import mk.ukim.finki.wp.lab.model.Dish;
+import mk.ukim.finki.wp.lab.model.Rank;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,24 +11,23 @@ import java.util.List;
 
 @Component
 public class DataHolder {
+
     public static List<Chef> chefs = new ArrayList<>();
     public static List<Dish> dishes = new ArrayList<>();
 
     @PostConstruct
-    public void init(){
+    public void init() {
 
+        chefs.add(new Chef("Gordon", "Ramsay", "gr", new ArrayList<>()));
+        chefs.add(new Chef("Jamie", "Oliver", "gr", new ArrayList<>()));
+        chefs.add(new Chef("Thomas", "Keller", "gr", new ArrayList<>()));
+        chefs.add(new Chef("David", "Chang", "gr", new ArrayList<>()));
+        chefs.add(new Chef("Mark", "Mark", "gr", new ArrayList<>()));
 
-        chefs.add(new Chef(1L,"Rene","Redzepi","nordic",new ArrayList<>()));
-        chefs.add(new Chef(2L,"Massimo","Bottura","italian",new ArrayList<>()));
-        chefs.add(new Chef(3L,"Heston","Blumenthal","experimental",new ArrayList<>()));
-        chefs.add(new Chef(4L,"Ana","Roš","slovenian",new ArrayList<>()));
-        chefs.add(new Chef(5L,"Enrique","Olvera","mexican",new ArrayList<>()));
-
-        
-        dishes.add(new Dish("risotto","Mushroom Risotto","Italian",14));
-        dishes.add(new Dish("ramen","Tonkotsu Ramen","Japanese",12));
-        dishes.add(new Dish("tacos","Beef Tacos","Mexican",11));
-        dishes.add(new Dish("paella","Seafood Paella","Spanish",18));
-        dishes.add(new Dish("falafel","Falafel Bowl","Middle Eastern",9));
+        dishes.add(new Dish("steak", "Steak", "American", 7, Rank.HIGH));
+        dishes.add(new Dish("pizza", "Pizza", "Italian", 15, Rank.MEDIUM));
+        dishes.add(new Dish("pasta", "Pasta Carbonara", "Italian", 10, Rank.HIGH));
+        dishes.add(new Dish("burger", "Burger", "American", 10, Rank.LOW));
+        dishes.add(new Dish("dessert", "Chocolate Cake", "American", 20, Rank.MEDIUM));
     }
 }

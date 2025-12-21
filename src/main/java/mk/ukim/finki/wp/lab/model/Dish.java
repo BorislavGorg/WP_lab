@@ -1,62 +1,40 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@Entity
+@Table(name = "dishes")
 public class Dish {
 
-    private static long counter = 1L;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String dishId;
     private String name;
     private String cuisine;
     private int preparationTime;
 
-    // ✔ Default no-arg constructor (важно за Spring)
-    public Dish() {
-    }
+    @Enumerated(EnumType.STRING)
+    private Rank rank;
 
-    // ✔ Constructor што го користи DataHolder
-    public Dish(String dishId, String name, String cuisine, int preparationTime) {
-        this.id = counter++;
+    @ManyToOne
+    @JoinColumn(name = "chef_id")
+    private Chef chef;
+
+    public Dish(String dishId,
+                String name,
+                String cuisine,
+                int preparationTime,
+                Rank rank) {
         this.dishId = dishId;
         this.name = name;
         this.cuisine = cuisine;
         this.preparationTime = preparationTime;
-    }
-
-    // ✔ Getters и setters
-    public Long getId() {
-        return id;
-    }
-
-    public String getDishId() {
-        return dishId;
-    }
-
-    public void setDishId(String dishId) {
-        this.dishId = dishId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCuisine() {
-        return cuisine;
-    }
-
-    public void setCuisine(String cuisine) {
-        this.cuisine = cuisine;
-    }
-
-    public int getPreparationTime() {
-        return preparationTime;
-    }
-
-    public void setPreparationTime(int preparationTime) {
-        this.preparationTime = preparationTime;
+        this.rank = rank;
     }
 }
